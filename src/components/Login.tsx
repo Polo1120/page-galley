@@ -7,6 +7,7 @@ import { useAuth } from './AuthProvider'; // Asegúrate de importar useAuth
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { login } = useAuth(); 
@@ -31,33 +32,50 @@ const Login: React.FC = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Alterna entre true y false
+  };
+
   return (
     <div className='login'>
-      <h1>Login</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
+    <h2>Bienvenido</h2>
+    {error && <p className='error-message'>{error}</p>}
+    <form onSubmit={handleLogin}>
+      <div className='content-email'>
+        <label htmlFor='email'>Correo</label>
+        <input
+          id='email'
+          type="email"
+          value={email}
+          placeholder='Correo'
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <div className='content-password'>
+        <label htmlFor='password'>Contraseña</label>
+        <div className="password-wrapper">
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
+            id='password'
+            type={showPassword ? 'text' : 'password'} // Alterna el tipo de input
             value={password}
+            placeholder='Contraseña'
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <button
+            type="button"
+            className="toggle-password"
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? '🙈' : '👁️'} {/* Cambia el ícono basado en el estado */}
+          </button>
         </div>
-        <button type="submit" className='submit'>Login</button>
-      </form>
-    </div>
-  );
+      </div>
+      <button type="submit" className='submit'>Inicia sesión</button>
+    </form>
+  </div>
+);
 };
 
 export default Login;
