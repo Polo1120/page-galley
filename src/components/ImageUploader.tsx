@@ -1,95 +1,73 @@
-import React, { useState } from 'react';
-import { supabase } from './supabaseClient'; 
+import React, { useState } from "react";
+import { CircularProgress, Typography, Box, Button } from "@mui/material";
+import { supabase } from "./supabaseClient";
 
 const ImageUploader: React.FC = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
 
-  const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragging(false);
-    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-      setSelectedFile(event.dataTransfer.files[0]);
-    }
-  };
+  const uploadImages = async (files: FileList) => {
+    setLoading(true); 
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragging(false);
-  };
-
-  const uploadImage = async () => {
-    if (selectedFile) {
-      setLoading(true); 
-
-      try {
-        const fileName = selectedFile.name;
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileName = file.name;
         const { error } = await supabase.storage
-          .from('imgs') 
-          .upload(fileName, selectedFile);
+          .from("imgs")
+          .upload(fileName, file);
 
         if (error) {
           throw error;
         }
-
-        alert("Upload successful!");
-        setSelectedFile(null);
-      } catch (error: any) {
-        console.error('Error uploading file:', error.message);
-        alert('Error uploading file. Please check the console for more details.');
-      } finally {
-        setLoading(false);
       }
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setLoading(false); 
+    }
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      await uploadImages(files);
     }
   };
 
   return (
-    <div>
-      <div
-        onDrop={handleFileDrop}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        style={{
-          border: '2px dashed #ccc',
-          padding: '20px',
-          textAlign: 'center',
-          backgroundColor: isDragging ? '#f0f0f0' : '#fff',
-          marginBottom: '20px',
-        }}
-      >
-        {selectedFile ? (
-          <p>Selected file: {selectedFile.name}</p>
-        ) : (
-          <p>Drag & drop an image here or click to select</p>
-        )}
-      </div>
-
+    <div className="image-upload">
       <input
         type="file"
-        onChange={(event) => {
-          if (event.target.files && event.target.files[0]) {
-            setSelectedFile(event.target.files[0]);
-          }
-        }}
-        style={{ display: 'none' }} 
+        onChange={handleFileChange}
+        style={{ display: "none" }}
         id="fileInput"
+        multiple
       />
-      
-      <button onClick={() => document.getElementById('fileInput')?.click()}>
-        Select Image
-      </button>
 
-      <button onClick={uploadImage} disabled={loading || !selectedFile}>
-        {loading ? 'Uploading...' : 'Upload Image'}
-      </button>
+      <Button variant="contained" color="secondary" onClick={() => document.getElementById("fileInput")?.click()}>
+        Subir Imagenes
+      </Button>
 
-      {loading && <div className="loading-bar">Uploading...</div>}
+      {loading && (
+        <Box
+          sx={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            color: '#fff',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            p: 2,
+            zIndex: 1300,
+          }}
+        >
+          <CircularProgress color="inherit" sx={{ mr: 2 }} />
+          <Typography variant="body1">Sending images...</Typography>
+        </Box>
+      )}
     </div>
   );
 };

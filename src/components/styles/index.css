@@ -10,26 +10,7 @@
     --main-grid-color     : #E3E3E3;
 }
 
-.header {
-    background-color: var(--main-white-color);
-    height          : 55px;
-    display         : flex;
-    align-items     : center;
-    border-bottom   : 1px solid var(--main-grid-color);
-    width           : 100%;
 
-    a {
-        margin-left    : 2rem;
-        color          : var(--main-text-color);
-        text-decoration: none;
-    }
-}
-
-.Gallery {
-    display              : grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    column-gap           : 5px;
-}
 
 .logo img {
     max-width : 120px;
@@ -49,13 +30,6 @@
     height     : 100%;
 }
 
-.logout {
-    margin    : 0 2rem 0 auto;
-    color     : var(--main-text-color);
-    border    : 0;
-    background: none;
-    cursor    : pointer;
-}
 
 .main {
     display        : flex;
@@ -94,6 +68,16 @@ h2 {
 }
 
 
+.send-image-upload{
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.image-upload{
+    margin-left: 2rem;
+}
+
 
 /* Login */
 
@@ -118,64 +102,6 @@ h2 {
 
 }
 
-.login .submit {
-    background   : var(--main-bg-buttom-color);
-    color        : var(--main-white-color);
-    border       : 0;
-    height       : 25px;
-    width        : 100%;
-    max-width    : 80%;
-    cursor       : pointer;
-    margin       : 10px auto 0 auto;
-    height       : 35px;
-    border-radius: 3px;
-    font-family  : "Roboto", sans-serif;
-    font-weight  : 500;
-    font-style   : normal;
-}
-
-.content-email,
-.content-password {
-    display       : flex;
-    flex-direction: column;
-    width         : 100%;
-
-    input {
-        width        : 100%;
-        min-height   : 40px;
-        padding      : 2px 30px 0 10px;
-        border-radius: 3px;
-        border       : 1px solid var(--main-border-color);
-        box-sizing   : border-box;
-    }
-
-    input:focus-visible {
-        outline: none;
-        border : 1px solid var(--main-border-color);
-    }
-
-    label {
-        color      : var(--main-text-color);
-        font-family: "Roboto", sans-serif;
-        font-weight: 500;
-        font-style : normal;
-
-    }
-
-    .password-wrapper {
-        position: relative;
-
-        button {
-            position  : absolute;
-            right     : 0px;
-            top       : 0;
-            background: none;
-            border    : 0;
-            bottom    : 0;
-            cursor    : pointer;
-        }
-    }
-}
 
 /* end Login */
 
@@ -195,3 +121,9 @@ h2 {
 }
 
 /* end modal */
+
+
+.gallery-img{
+    width: 100%;
+    height: auto;
+}
