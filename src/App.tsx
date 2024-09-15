@@ -6,14 +6,20 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/Header';
 import Home from './components/Home';
 import { AuthProvider } from './components/AuthProvider';
+import theme from './components/styles/theme';
+import { ThemeProvider } from '@mui/material/styles';
+
+
+
 
 const App: React.FC = () => {
   return (
+    <ThemeProvider theme={theme}>
     <Router>
       <AuthProvider>
         <Header />
         <Routes>
-          <Route path="/" element={<Home />} />  {/* Ruta para el Home */}
+          <Route path="/" element={<Home />} /> 
           <Route
             path="/files"
             element={
@@ -33,6 +39,7 @@ const App: React.FC = () => {
         </Routes>
       </AuthProvider>
     </Router>
+    </ThemeProvider>
   );
 };
 

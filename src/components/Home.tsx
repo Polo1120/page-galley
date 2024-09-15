@@ -4,7 +4,6 @@ import FileList from "./FileList";
 
 const Home: React.FC = () => {
   const { isAuthenticated } = useAuth();
-  console.log(isAuthenticated);
 
   return (
     <div className={!isAuthenticated ? "Home" : "Content"}>
